@@ -51,4 +51,4 @@ python main.py
 This takes sentences from your reports, and checks each word against UMLS database.
 Checked words are cached to prevent need to check words agains (API is slow).
 
-Found words are output as a summary to ./logs with ending _summary.txt.
+Found words are output as a summary to ./summaries with ending _summary.txt.
