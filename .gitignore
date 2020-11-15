@@ -3,5 +3,3 @@ nlp/*
 summaries/*
 !summaries/README.md
 modules/__pycache__
-parsedfiles.txt
-UMLS/
