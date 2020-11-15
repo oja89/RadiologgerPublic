@@ -6,4 +6,4 @@ summaries/*
 !summaries/README.md
 modules/__pycache__
 conf/config.py
-
+conf/__pycache__/
