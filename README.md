@@ -1,7 +1,7 @@
 # RadiologgerNLP
 
 Sign up to UMLS...
-Download the UMLS database.
+Get your API key from UMLS profile page ( uts.nlm.nih.gov//uts.html#profile )
 
 
 ### Set up
@@ -34,21 +34,32 @@ pip install -r requirements.txt
 python conf/downloadnltk.py
 ```
 5. Put your API key to UMLS in conf/Config.py.
-All folders and output-files are also named there, but keep the defaults.
+All folders and output-files are also named there, but we suggest keep the defaults.
 
-6. We need reports to parse, these can be in pdf too (but columns break stuff up!):
-If pdfs: Put them in ./pdfs folder and run
+6. Run the GUI:
+```shell
+python gui.py
+```
+This will let you summarize reports one at the time.
+Checked words are cached to prevent need to check words agains (API is slow).
+Gives prints in the GUI and also saves summary in ./summaries
+
+-------------------
+
+7. If you need to parse pdf, that can be done with module pdfread.py (but columns break stuff up!):
+Put them in ./pdfs folder and run
 ```shell
 python pdfread.py
 ```
 Those are output by the function to ./reports
 If they are in .txt format, just put them into ./reports
 
-7. start the main function
+8. If you want to do whole ./reports folder:
+start the main function
 ```shell
 python main.py
 ```
-This takes sentences from your reports, and checks each word against UMLS database.
+This takes sentences from your ./reports, and checks each word against UMLS database.
 Checked words are cached to prevent need to check words agains (API is slow).
 
-Found words are output as a summary to ./logs with ending _summary.txt.
+Found words are output as a summary to ./summaries with ending _summary.txt.
