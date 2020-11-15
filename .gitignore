@@ -1,5 +1,7 @@
 nlp/*
 .vscode/
+.idea/
+__pycache__/
 summaries/*
 !summaries/README.md
 modules/__pycache__
