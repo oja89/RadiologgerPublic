@@ -15,6 +15,5 @@ pdfs/*
 !pdfs/README.md
 
 conf/*
-!conf/config.py
 !conf/downloadnltk.py
 
