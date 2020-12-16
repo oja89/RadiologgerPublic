@@ -5,7 +5,7 @@ import requests, json
 
 #API key can be seen in UMLS profile page
 
-#moved the key to ./conf/apilogin so its not hardcoded here
+#moved the key to ./conf/config so its not hardcoded here
 apikey = API_KEY
 URI = "https://uts-ws.nlm.nih.gov"
 search_endpoint = "/rest/search/2020AA"
@@ -17,22 +17,16 @@ tgt = AuthClient.gettgt()
 pagenumber = 1
 
 def db_check(content):
-    #list_of_words = content.split(" ")
 
     ret_words = []
-    #for word in list_of_words:
-
     # return also lists of mild, moderate, severe words
     mild_words = []
     moderate_words = []
     severe_words = []
 
-    #print(content)
     for word in content:
-        #print(word)
 
         # check also if the words can be found from mild, moderate, severe dbs:
-        # WORK IN PROGRESS
         if word in db.mild_words:
             mild_words.append(word)
         if word in db.moderate_words:
@@ -40,18 +34,22 @@ def db_check(content):
         if word in db.severe_words:
             severe_words.append(word)
 
-        # if word in wordlist:
+        # if word checked already and not in UMLS:
         if word in db.not_found_db:
             # no need to search again
-            print("word already checked and NOT found: " + word)
+            #print("word already checked and NOT found: " + word)
+            print(word, end = ', ')
             continue
 
+        # if word is checked and found already from UMLS:
         if word in db.found_db:
             #no need to search again
-            print("word already checked and found: " + word.upper())
+            #print("word already checked and found: " + word.upper())
+            print(word.upper(), end = ', ')
             ret_words.append(word)
             continue
 
+        # otherwise this is a new word, ask it from UMLS
         ticket = AuthClient.getst(tgt)
         query = {'string':word, 'ticket':ticket, 'searchType': search_type, 'sabs': libraries}
         r = requests.get(URI+search_endpoint, params=query)
@@ -63,12 +61,15 @@ def db_check(content):
 
         #if not found, save in not_found and continue
         if jsonData["results"][0]["ui"] == "NONE":
-            print(word)
+            #print(word)
+            print(word, end=', ')
             db.not_found_db.append(word)
             continue
+
         #if found, save in found and append to word list
         else:
-            print(word.upper())
+            #print(word.upper())
+            print(word.upper(), end=', ')
             db.found_db.append(word)
             #add word to list
             ret_words.append(word)
@@ -77,12 +78,9 @@ def db_check(content):
 def db_keywords(keywords):
 
     keys_in_db = []
-    #for word in list_of_words:
 
-    #print(content)
     for word in keywords:
 
-        # if word in wordlist:
         if word in db.not_found_db:
             # no need to search again
             print("word already checked and NOT found: " + word)
