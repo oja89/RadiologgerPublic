@@ -4,7 +4,7 @@ import os
 import conf.config as config
 import modules.filework as filework
 from modules.cleaners import get_cleaned_sentences, get_orig_sentences
-from modules.db_search import db_check
+from modules.db_search import db_check, db_keywords
 from modules.freqcounter import get_freqs
 
 reports = config.REPORTDIR
@@ -157,13 +157,20 @@ def main():
         # get name for outputfile
         outputfile = get_outputname(reportname)
 
+        # check if the keywords are in the database
+        keys_in_db = db_keywords(keywords)
+
+        # format the output
         summary = ["Summary: "] + summary + ["\n"]
         keywords = ["Keywords: "] + keywords + ["\n"]
         most_valuable = ["Most valuable: "] + most_valuable + ["\n"]
         mild_list = ["Milds: "] + mild_list + ["\n"]
         moderate_list = ["Moderates: "] + moderate_list + ["\n"]
         severe_list = ["Severes: "] + severe_list + ["\n"]
-        output_content = summary + keywords + most_valuable + mild_list + moderate_list + severe_list
+        keys_in_db = ["Keys in db: "] + keys_in_db + ["\n"]
+
+        # outputcontent order
+        output_content = summary + keywords + most_valuable + mild_list + moderate_list + severe_list + keys_in_db
 
         # do writing to that file
         outputstuff(output_content, outputfile)
