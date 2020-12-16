@@ -26,7 +26,7 @@ nlp/Scripts/activate.bat
 ```
 3. install dependencies
 ```shell
-pip install -r requirements.txt
+python -m pip install -r requirements.txt --user
 ```
 
 4. When running first time, we need to download nltk databases used:
