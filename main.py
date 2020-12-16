@@ -55,7 +55,10 @@ def dofile(filename):
         # just print the sentence.
         if sentence[0] == "keywords":
             print("a keyword sentence")
-            keywords = [word.upper() for word in sentence]
+            stopwords = ["keyword", "keywords"]
+            for word in sentence:
+                if word not in stopwords:
+                    keywords.append(word)
 
             # dont let loop go to append again
             continue
@@ -108,7 +111,7 @@ def dofile(filename):
         most_valuable.append(original[order[i]])
 
 
-    return summary, keywords, most_valuable, mild_list, moderate_list, severe_list
+    return summary, keywords, most_valuable, mild_list, moderate_list, severe_list, parsed, original
 
 def get_reportname(file):
     """
@@ -149,7 +152,7 @@ def main():
 
     # check every file
     for file in files:
-        summary, keywords, most_valuable, mild_list, moderate_list, severe_list = dofile(file)
+        summary, keywords, most_valuable, mild_list, moderate_list, severe_list, parsed, original = dofile(file)
 
         # get name from report file
         reportname = get_reportname(file)
@@ -161,16 +164,18 @@ def main():
         keys_in_db = db_keywords(keywords)
 
         # format the output
-        summary = ["Summary: "] + summary + ["\n"]
+        original = ["Original text: "] + original + ["\n"]
+        parsed = ["Lowercased and without stopwords: "] + parsed + ["\n"]
+        summary = ["Matched against UMLS: "] + summary + ["\n"]
         keywords = ["Keywords: "] + keywords + ["\n"]
-        most_valuable = ["Most valuable: "] + most_valuable + ["\n"]
+        most_valuable = ["Most valuable sentences calculated: "] + most_valuable + ["\n"]
         mild_list = ["Milds: "] + mild_list + ["\n"]
         moderate_list = ["Moderates: "] + moderate_list + ["\n"]
         severe_list = ["Severes: "] + severe_list + ["\n"]
-        keys_in_db = ["Keys in db: "] + keys_in_db + ["\n"]
+        keys_in_db = ["Keywords found from UMLS db: "] + keys_in_db + ["\n"]
 
         # outputcontent order
-        output_content = summary + keywords + most_valuable + mild_list + moderate_list + severe_list + keys_in_db
+        output_content = original + parsed + summary + keywords + most_valuable + mild_list + moderate_list + severe_list + keys_in_db
 
         # do writing to that file
         outputstuff(output_content, outputfile)
