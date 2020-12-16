@@ -1,10 +1,15 @@
 #use this to store the already searched words so we dont need to ask them again from API
 
 ## words found from UMLS database
-found_db = []
+found_db = ["report", "case", "uterine", "artery", "pseudoanerysm", "woman", "weeks", "gestation", "room", "lower", "left",
+            "quadrant", "pain", "vaginal", "bleeding", "ultrasound", "presented", "emergency", "adnexal", "mass", "consistent",
+            "percutaneous", "thrombin", "injection", "chosen", "avoid", "contrast", "radiation", "risk", "fetus", "demonstrated",
+            "thrombosis", "evidence", "fetal", "distress", "postprocedure", "day", "patient", "similar", "complaints",
+            "found", "decision", "made", "treat", "computed", "tomography", "coil", "embolization", "procedure", "successful",
+            "angiography"]
 
 ## words not found from UMLS database
-not_found_db = []
+not_found_db = ["primigravid", "revealed", "recanalized", "revealed"]
 
 ## mild synonyms and related words from Merriam-Webster https://www.merriam-webster.com/thesaurus/mild
 mild_words = ["mild", "balmy", "clement", "equable", "genial", "gentle", "moderate", "soft", "temperate", "clear", "cloudless", "fair",

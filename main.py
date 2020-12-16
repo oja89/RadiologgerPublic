@@ -65,11 +65,15 @@ def dofile(filename):
         else:
             db_words, milds, moderates, severes = db_check(sentence)
 
-        #append these to the summary
+        # append these to the summary
         summary.append(db_words)
-        mild_list.append(milds)
-        moderate_list.append(moderates)
-        severe_list.append(severes)
+        # append these only if there are something to output
+        if len(milds) > 0:
+            mild_list.append(milds)
+        if len(moderates) > 0:
+            moderate_list.append(moderates)
+        if len(severes) > 0:
+            severe_list.append(severes)
 
 
     # check this again against the original file?
@@ -153,12 +157,12 @@ def main():
         # get name for outputfile
         outputfile = get_outputname(reportname)
 
-        summary = ["Summary: "] + summary
-        keywords = ["Keywords: "] + keywords
-        most_valuable = ["Most valuable: "] + most_valuable
-        mild_list = ["Milds: "] + mild_list
-        moderate_list = ["Moderates: "] + moderate_list
-        severe_list = ["Severes: "] + severe_list
+        summary = ["Summary: "] + summary + ["\n"]
+        keywords = ["Keywords: "] + keywords + ["\n"]
+        most_valuable = ["Most valuable: "] + most_valuable + ["\n"]
+        mild_list = ["Milds: "] + mild_list + ["\n"]
+        moderate_list = ["Moderates: "] + moderate_list + ["\n"]
+        severe_list = ["Severes: "] + severe_list + ["\n"]
         output_content = summary + keywords + most_valuable + mild_list + moderate_list + severe_list
 
         # do writing to that file

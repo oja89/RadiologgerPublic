@@ -25,13 +25,14 @@ def write_list_to_file(content, logfile):
     f = open(logfile, "w+")
     lines = 0
 
-    for sentences in content:
+    for part in content:
         lines += 1
-
-        for words in sentences:
-
-            f.write(words)
-            f.write(" ")
+        if type(part) is list:
+            for word in part:
+                f.write(word)
+                f.write(" ")
+        else:
+            f.write(part)
         f.write("\n")
 
     f.close()
