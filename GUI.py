@@ -1,7 +1,7 @@
 from main import *
 from tkinter import *
 from tkinter.filedialog import askopenfilename
-
+from modules.db_search import db_keywords
 #Parse texts from lists
 def parser(parsed_to_be):
     parsed = ""
@@ -11,6 +11,19 @@ def parser(parsed_to_be):
             parsed += " "
         parsed += "\n"
     return parsed
+
+def loop_list(loop):
+    output = ""
+    for list in loop:
+        for word in list:
+            output += word
+            output += ", "
+    size = len(output)
+    output = output[:size-2]
+    return output
+    
+
+
 
 
 def do_summary():
@@ -24,11 +37,12 @@ def do_summary():
     #files = get_files()
 
     #check file
-    summary, keywords, most_valuable = dofile(file)
-
+    summary, keywords, most_valuable, mild, moderate, severe, parsed, original = dofile(file)
     #get name from report file
     reportname = get_reportname(file)
-
+    
+    #Get db keywords
+    keys_in_db = str(db_keywords(keywords))
     #get name for outputfile
     outputfile = get_outputname(reportname)
 
@@ -40,11 +54,14 @@ def do_summary():
     reportname = reportname.replace("-", " ")
 
     #Parse all
+    parsed = parser(parsed)
     summary = parser(summary)
-    keywords = parser(keywords)
     most_valuable = parser(most_valuable)
-    
-    text = "Filename: "+ str(reportname) + "\n" +  "\n" +"Stopwords parsed from the sentences: " + "\n"+ summary +"\n"+ "\n"+ keywords + "\n" + "\n" + "Most valuable sentences:" + "\n" + most_valuable
+    mild = "Milds: " + loop_list(mild)
+    moderate = "Moderates: " + loop_list(moderate)
+    severe = "Severes: " +  loop_list(severe)
+    keys_in_db = "Keywords found from UMLS db: " + keys_in_db
+    text = "Filename: "+ str(reportname) + "\n" +  "\n" +"Lowecased and without stopwords: " + "\n"+ parsed +"\n"+ "\n"+"Matched against UMLS  " + "\n"+ summary +"\n"+ "\n"+"Keywords:"+ "\n"+ str(keywords) + "\n" + "\n" + "Summary:" + "\n" + most_valuable + "\n"+ "\n"+ mild + "\n"+ "\n" + moderate + "\n"+  "\n"+ severe + "\n" + "\n" + keys_in_db
     T.insert(END, text) 
     
     #Make the button command available again
