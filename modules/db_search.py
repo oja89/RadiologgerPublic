@@ -22,9 +22,23 @@ def db_check(content):
     ret_words = []
     #for word in list_of_words:
 
+    # return also lists of mild, moderate, severe words
+    mild_words = []
+    moderate_words = []
+    severe_words = []
+
     #print(content)
     for word in content:
         #print(word)
+
+        # check also if the words can be found from mild, moderate, severe dbs:
+        # WORK IN PROGRESS
+        if word in db.mild_words:
+            mild_words.append(word)
+        if word in db.moderate_words:
+            moderate_words.append(word)
+        if word in db.severe_words:
+            severe_words.append(word)
 
         # if word in wordlist:
         if word in db.not_found_db:
@@ -58,4 +72,4 @@ def db_check(content):
             db.found_db.append(word)
             #add word to list
             ret_words.append(word)
-    return ret_words
+    return ret_words, mild_words, moderate_words, severe_words

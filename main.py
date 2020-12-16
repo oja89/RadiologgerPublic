@@ -43,6 +43,11 @@ def dofile(filename):
     # also take the "original" keywords separately to not mess with freqs etc.
     keywords = []
 
+    # also mild, moderate, severe
+    mild_list = []
+    moderate_list = []
+    severe_list = []
+
     #for each sentence
     for sentence in parsed:
 
@@ -58,10 +63,14 @@ def dofile(filename):
         # check if the words are in db, return those that are
         # THIS IS VERY TIME CONSUMING!
         else:
-            db_words = db_check(sentence)
+            db_words, milds, moderates, severes = db_check(sentence)
 
         #append these to the summary
         summary.append(db_words)
+        mild_list.append(milds)
+        moderate_list.append(moderates)
+        severe_list.append(severes)
+
 
     # check this again against the original file?
     # calculate word freq from db_words
@@ -94,7 +103,8 @@ def dofile(filename):
 
         most_valuable.append(original[order[i]])
 
-    return summary, keywords, most_valuable
+
+    return summary, keywords, most_valuable, mild_list, moderate_list, severe_list
 
 def get_reportname(file):
     """
@@ -135,7 +145,7 @@ def main():
 
     # check every file
     for file in files:
-        summary, keywords, most_valuable = dofile(file)
+        summary, keywords, most_valuable, mild_list, moderate_list, severe_list = dofile(file)
 
         # get name from report file
         reportname = get_reportname(file)
@@ -143,7 +153,14 @@ def main():
         # get name for outputfile
         outputfile = get_outputname(reportname)
 
-        output_content = summary + keywords + most_valuable
+        summary = ["Summary: "] + summary
+        keywords = ["Keywords: "] + keywords
+        most_valuable = ["Most valuable: "] + most_valuable
+        mild_list = ["Milds: "] + mild_list
+        moderate_list = ["Moderates: "] + moderate_list
+        severe_list = ["Severes: "] + severe_list
+        output_content = summary + keywords + most_valuable + mild_list + moderate_list + severe_list
+
         # do writing to that file
         outputstuff(output_content, outputfile)
 
